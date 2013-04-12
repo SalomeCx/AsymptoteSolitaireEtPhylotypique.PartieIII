@@ -5,22 +5,24 @@
 %%
 
 [[:digit:]]+ {yylval.dig = atoi(yytext) ; return ENTIER ;}
-"(" { return '(' ;}
-")" { return ')' ;}
-"--" { return DT ;}
-"," { return ',' ;}
-":" { return ':' ;}
-";" { return ';' ;}
-\n { return '\n' ;}
+"(" {return '(' ;}
+")" {return ')' ;}
+"--" {return DT ;}
+"," {return ',' ;}
+":" {return ':' ;}
+";" {return ';' ;}
+\n {return '\n' ;}
 
-"+"|"-" {return MOINSPLUS ;}
-"*"|"/" {return DIVISERFOIS ;}
+"+" {return PLUS ;}
+"-" {return MOINS ;}
+"*" {return FOIS ;}
+"/" {return DIVISER ;}
 
 
 "draw" {return DRAW ;}
 
 " " {}
 
-.|\n { return yytext[0] ;}
+.|\n {return yytext[0] ;}
 
 %%
