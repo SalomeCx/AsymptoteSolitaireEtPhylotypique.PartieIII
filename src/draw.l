@@ -19,7 +19,15 @@
 "/" {return DIVISER ;}
 
 
+"cycle" {return CYCLE ;}
 "draw" {return DRAW ;}
+"fill" {return FILL ;}
+
+"scalaire" {return SCALAIRE ;}
+"point" {return POINT ;}
+"chemin" {return CHEMIN ;}
+
+[[:alpha:]_][[:alphanum:]_]* {yylval.str = yytext ; return VARIABLE ;}
 
 " " {}
 

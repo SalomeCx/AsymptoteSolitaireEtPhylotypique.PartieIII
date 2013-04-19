@@ -7,15 +7,23 @@
 
 void yyerror(char* s);
 
+int premier[2] ;
+
 %}
 
 %union {
 	int dig ;
 	int coordonnee[2] ;
+	char* str ;
 }
 
 %token <dig> ENTIER
-%token DRAW DT MOINS PLUS DIVISER FOIS
+%token <str> VARIABLE
+%token DRAW FILL 
+%token DT 
+%token MOINS PLUS DIVISER FOIS 
+%token CYCLE 
+%token SCALAIRE POINT CHEMIN
 
 %type <dig> num
 %type <coordonnee> coord
@@ -34,14 +42,21 @@ restedessin : expr ';' '\n' restedessin
 			;
 
 expr : draw
+		| fill
 		;
 
-draw : DRAW optdraw
-
-optdraw : coord { printf("cairo_move_to ( cr ,%d ,%d);\n",$1[0],$1[1]); } resteoptdraw 
+draw : DRAW optdraw { printf("cairo_stroke( cr );\n") ; }
 		;
 
-resteoptdraw : DT coord { printf("cairo_line_to ( cr ,%d ,%d);\ncairo_set_line_width ( cr , 10.0);\ncairo_stroke ( cr );\n" , $2[0] , $2[1] ) ; } resteoptdraw 
+fill : FILL optdraw { printf("cairo_line_to ( cr ,%d ,%d);\ncairo_set_line_width ( cr , 10.0);\ncairo_fill( cr );\n" , premier[0] , premier[1] ) ; }
+		;
+
+optdraw : coord { printf("cairo_move_to ( cr ,%d ,%d);\n",$1[0],$1[1]); premier[0] = $1[0] ; premier[1] = $1[1] ; } resteoptdraw 
+		;
+
+resteoptdraw : DT coord { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $2[0] , $2[1] ) ; } resteoptdraw 
+			| DT CYCLE { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , premier[0] , premier[1] ) ; } resteoptdraw 
+			| DT PLUS coord { printf("cairo_rel_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $3[0] , $3[1] ) ; } resteoptdraw 
 			|
 			;
 
@@ -55,6 +70,7 @@ num : ENTIER {$$ = $1 ;}
 	| num DIVISER num { $$ = $1 / $3 ;}
 	| num FOIS num { $$ = $1 * $3 ;}
 	| '(' num ')' { $$ = $2 ;}
+	;
 
 %%
 

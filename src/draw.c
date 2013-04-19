@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
 int main (void){\n\
 cairo_surface_t * surface;\n\
 cairo_t * cr;\n\
-cairo_surface_t * pdf_surface = cairo_pdf_surface_create(\"%s.dessin\",500,500);\n\
+cairo_surface_t * pdf_surface = cairo_pdf_surface_create(\"%s.pdf\",500,500);\n\
 cr = cairo_create ( pdf_surface );\n" , argv[2] ) ;
 
   yyparse() ;
