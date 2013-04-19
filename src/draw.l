@@ -28,6 +28,7 @@
 "chemin" {return CHEMIN ;}
 
 [[:alpha:]_][[:alphanum:]_]* {yylval.str = yytext ; return VARIABLE ;}
+"=" {return '=' ;}
 
 " " {}
 

@@ -45,18 +45,18 @@ expr : draw
 		| fill
 		;
 
-draw : DRAW optdraw { printf("cairo_stroke( cr );\n") ; }
+draw : DRAW chemin { printf("cairo_stroke( cr );\n") ; }
 		;
 
-fill : FILL optdraw { printf("cairo_line_to ( cr ,%d ,%d);\ncairo_set_line_width ( cr , 10.0);\ncairo_fill( cr );\n" , premier[0] , premier[1] ) ; }
+fill : FILL chemin { printf("cairo_line_to ( cr ,%d ,%d);\ncairo_set_line_width ( cr , 10.0);\ncairo_fill( cr );\n" , premier[0] , premier[1] ) ; }
 		;
 
-optdraw : coord { printf("cairo_move_to ( cr ,%d ,%d);\n",$1[0],$1[1]); premier[0] = $1[0] ; premier[1] = $1[1] ; } resteoptdraw 
+chemin : coord { printf("cairo_move_to ( cr ,%d ,%d);\n",$1[0],$1[1]); premier[0] = $1[0] ; premier[1] = $1[1] ; } restechemin
 		;
 
-resteoptdraw : DT coord { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $2[0] , $2[1] ) ; } resteoptdraw 
-			| DT CYCLE { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , premier[0] , premier[1] ) ; } resteoptdraw 
-			| DT PLUS coord { printf("cairo_rel_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $3[0] , $3[1] ) ; } resteoptdraw 
+restechemin : DT coord { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $2[0] , $2[1] ) ; } restechemin 
+			| DT CYCLE { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , premier[0] , premier[1] ) ; } restechemin
+			| DT PLUS coord { printf("cairo_rel_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $3[0] , $3[1] ) ; } restechemin 
 			|
 			;
 
