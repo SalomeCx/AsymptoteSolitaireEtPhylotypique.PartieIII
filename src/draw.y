@@ -5,9 +5,15 @@
 #include <string.h>
 #include <math.h>
 
+#include "tableaux.h"
+
 void yyerror(char* s);
 
 int premier[2] ;
+
+tableau var_points;
+tableau var_scalaires;
+tableau var_chemins;
 
 %}
 
@@ -33,7 +39,7 @@ int premier[2] ;
 
 %%
 
-dessin : expr ';' '\n' restedessin
+dessin : expr ';' '\n' restedessin { var_points = creer_tableau(); var_scalaires = creer_tableau(); var_chemins = creer_tableau(); } 
 		| expr ';'
 		;
 
@@ -43,6 +49,8 @@ restedessin : expr ';' '\n' restedessin
 
 expr : draw
 		| fill
+		| declaration
+		| initialisation
 		;
 
 draw : DRAW chemin { printf("cairo_stroke( cr );\n") ; }
@@ -51,13 +59,25 @@ draw : DRAW chemin { printf("cairo_stroke( cr );\n") ; }
 fill : FILL chemin { printf("cairo_line_to ( cr ,%d ,%d);\ncairo_set_line_width ( cr , 10.0);\ncairo_fill( cr );\n" , premier[0] , premier[1] ) ; }
 		;
 
+declaration : SCALAIRE VARIABLE {}
+			| POINT VARIABLE {}
+			| CHEMIN VARIABLE {}
+			| SCALAIRE VARIABLE '=' ENTIER {}
+			| POINT VARIABLE '=' coord {}
+			| CHEMIN VARIABLE '=' chemin {}
+			;
+
+initialisation : VARIABLE '=' ENTIER {}
+				| VARIABLE '=' chemin {}
+				;
+
 chemin : coord { printf("cairo_move_to ( cr ,%d ,%d);\n",$1[0],$1[1]); premier[0] = $1[0] ; premier[1] = $1[1] ; } restechemin
 		;
 
 restechemin : DT coord { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $2[0] , $2[1] ) ; } restechemin 
 			| DT CYCLE { printf("cairo_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , premier[0] , premier[1] ) ; } restechemin
 			| DT PLUS coord { printf("cairo_rel_line_to( cr ,%d ,%d);\ncairo_set_line_width( cr , 10.0);\n" , $3[0] , $3[1] ) ; } restechemin 
-			|
+			| 
 			;
 
 coord : '(' num ',' num ')' { $$[0] = $2 ; $$[1] = $4 ;}
@@ -78,3 +98,6 @@ void yyerror(char* s){
 	perror(s);
 	perror("\n");
 }
+
+
+

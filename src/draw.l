@@ -27,11 +27,12 @@
 "point" {return POINT ;}
 "chemin" {return CHEMIN ;}
 
-[[:alpha:]_][[:alphanum:]_]* {yylval.str = yytext ; return VARIABLE ;}
+
+[[:alpha:]_][[:alnum:]_]* {yylval.str = yytext ; return VARIABLE ;}
 "=" {return '=' ;}
 
-" " {}
+" "|\n {}
 
-.|\n {return yytext[0] ;}
+. {return yytext[0] ;}
 
 %%
