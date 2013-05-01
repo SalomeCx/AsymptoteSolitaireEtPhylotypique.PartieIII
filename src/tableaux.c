@@ -23,7 +23,7 @@ void agrandir_tableau(tableau t)
 }
 
 
-void ajouter_element(tableau t, void * nom, void * val)
+void ajouter_element(tableau t, void * nom)
 {
 	agrandir_tableau(t);
 	
@@ -31,9 +31,8 @@ void ajouter_element(tableau t, void * nom, void * val)
 		return ;
 
 	t->tab[t->nb][0] = nom;
-	t->tab[t->nb][1] = val;
+	t->tab[t->nb][1] = 0;
 	t->nb++;
-
 }
 
 /* Retourne l'indice de l'élément s'il est présent, -1 sinon. */
@@ -57,16 +56,15 @@ int est_init_elem(tableau t, void * elem)
 	int indice = est_present_elem(t, elem);
 	if (indice == -1)
 		return indice;
-	if (t->tab[indice][1] == NULL)
+	if (t->tab[indice][1] == 0)
 		return 0; //non initialisé.
 	return 1; //initialisé.
 }
 
-/* Ne vérifie pas le cas où un élément est initialisé  à NULL. */
-void initialiser_elem(tableau t, void * nom, void * val)
+void initialiser_elem(tableau t, void * nom)
 {
 	int indice = est_present_elem(t, nom);
 	if (indice == -1)
 		return ;
-	t->tab[indice][1] = val;
+	t->tab[indice][1] = 1;
 }
