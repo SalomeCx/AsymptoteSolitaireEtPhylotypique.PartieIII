@@ -1,2 +1,11 @@
-draw (0,0)--(250,250) ;
-draw (250,0)--(0,250) ;
+point x ;
+scalaire y ;
+y = 250 ;
+x = (00,0) ;
+chemin z ;
+z = (250,0)--(0,250) ;
+chemin a ;
+a = (100,100)--(50,100) ;
+
+draw translate(x,(10,10))--(y,y) ;
+fill rotate( translate(z--a,(100,100)) , (0,0) , -30 ) ;
