@@ -45,7 +45,7 @@ void tableau_ajouter(tableau t, char* nom)
 	if (tableau_est_present(t, nom) != -1)
 	{
 		fprintf(stderr, "Erreur: variable déjà déclarée.\n");
-		return ;
+		exit(1) ;
 	}
 
 	t->noms[t->nb] = nom ;
@@ -89,7 +89,7 @@ void tableau_initialiser(tableau t, char* nom, void* elem)
 	if (indice == -1)
 	{
 		fprintf(stderr, "Erreur: variable non déclarée.\n");
-		return ;
+		exit(1) ;
 	}
 	t->valeurs[indice] = elem;
 }
