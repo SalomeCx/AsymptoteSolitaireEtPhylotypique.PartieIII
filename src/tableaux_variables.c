@@ -88,7 +88,7 @@ void tableau_initialiser(tableau t, char* nom, void* elem)
 	int indice = tableau_est_present(t, nom);
 	if (indice == -1)
 	{
-		perror("Erreur: variable non déclarée.\n");
+		fprintf(stderr, "Erreur: variable non déclarée.\n");
 		return ;
 	}
 	t->valeurs[indice] = elem;
